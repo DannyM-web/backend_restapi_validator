@@ -37,11 +37,9 @@ class MissingDataKeyMiddleware
                     return $response;
                 } else {
                     throw new MissingDataKeyException('Evaluate');
-                    return $response->withStatus(400);
                 }
             } else {
                 throw new MissingDataKeyException('Contact');
-                return $response->withStatus(400);
             }
         } else {
             return $response->withStatus(400);

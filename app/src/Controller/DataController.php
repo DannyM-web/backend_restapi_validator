@@ -2,16 +2,11 @@
 
 namespace Acme\Controller;
 
-use Acme\Database\DbConnection;
-use Acme\Database\Models\Contact;
-use Acme\Database\Models\ContactPhone;
-use Acme\Database\Models\Lead;
-use Acme\Database\Models\Phone;
 use Acme\Exception\Validation\EmptyFieldException;
 use Acme\Exception\Validation\InvalidFieldException;
-use Acme\Services\StoreService;
+
 use Exception;
-use PDOException;
+
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -49,37 +44,9 @@ class DataController
     private function retrieveLeadId()
     {
 
-        try {
-            $db = new DbConnection(
-                $this->container['settings']['db']['host'],
-                $this->container['settings']['db']['username'],
-                $this->container['settings']['db']['password'],
-                $this->container['settings']['db']['dbname']
-            );
-        } catch (PDOException $e) {
-            echo 'Connection failed: ' . $e->getMessage();
-        }
+        $storeService = $this->container->get('service.store');
 
-
-        $contact = new Contact($db);
-        $lead = new Lead($db);
-        $phone = new Phone($db);
-        $contactPhone = new ContactPhone($db);
-
-        $storeService = new StoreService($contact, $phone, $contactPhone, $lead);
-
-        try {
-            $db->beginTransaction();
-            $result = $storeService->storeLead($this->data);
-            $db->commit();
-        } catch (PDOException $e) {
-            $db->rollBack();
-            echo 'StoreLead not executed ' .  $e->getMessage()
-                . 'On file ' . $e->getFile()
-                . ' On line ' . $e->getLine();
-
-            return false;
-        }
+        $result = $storeService->storeLead($this->data);
 
         return $result;
     }

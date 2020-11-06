@@ -1,6 +1,6 @@
 <?php
 require_once 'vendor/autoload.php';
-require_once 'config.php';
+
 
 use Acme\Database\DbConnection;
 use Acme\Database\Migrations\ContactPhoneTable;
@@ -8,6 +8,8 @@ use Acme\Database\Migrations\ContactsTable;
 use Acme\Database\Migrations\LeadsTable;
 use Acme\Database\Migrations\PhonesTable;
 use Acme\Database\Migrations\MigrationContract;
+
+$config = require 'config.php';
 
 $db = new DbConnection(
     $config['settings']['db']['host'],
@@ -20,7 +22,7 @@ $migrations = [
     new ContactsTable($db),
     new PhonesTable($db),
     new ContactPhoneTable($db),
-    new LeadsTable($db)
+    new LeadsTable($db),
 ];
 
 try {

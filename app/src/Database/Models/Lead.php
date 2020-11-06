@@ -4,7 +4,6 @@ namespace Acme\Database\Models;
 
 
 use Acme\Database\Models\Model;
-use PDOException;
 
 class Lead extends Model
 {

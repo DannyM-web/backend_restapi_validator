@@ -16,7 +16,7 @@ class Model
     }
 
 
-    public function getDb()
+    protected function getDb()
     {
         return $this->db;
     }
